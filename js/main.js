@@ -21,19 +21,30 @@ navBar.innerHTML = `
       `
 nav.appendChild(navBar);
 
-// ARRAYS
-const arrayProductos = [juego1, juego2, juego3, juego4, juego5, juego6, juego7, juego8];
-
-let carrito = [];
-
-if (localStorage.getItem("carrito")) {
-  carrito = JSON.parse(localStorage.getItem("carrito"))
+class Producto {
+  constructor(id, nombre, descripcion, precio, img, cantidad) {
+      this.id = id;
+      this.nombre = nombre;
+      this.descripcion = descripcion;
+      this.precio = precio;
+      this.img = img;
+      this.cantidad = cantidad;
+  }
 }
-
-// CONTENEDOR PARA PODER MOSTRAR PRODUCTOS 
-
-const mostramosJuegos = document.getElementById("mostrarProductos");
-
+//Obtener datos desde la API estatita simulada con produntos.json en la carpeta data
+const obtenerDatosAPI = async () => {
+  const response = await fetch("./data/productos.json");
+  const datos = await response.json();
+  return datos;
+ };
+ //creo el araay donde se van a guardar despues los datos 
+const arrayProductos = [];
+// Agragar los datos de la API simulada en arrayProductos
+const agregarDatosAPI = async () => {
+  const datos = await obtenerDatosAPI();
+  arrayProductos.push(...datos);
+  const mostramosJuegos = document.getElementById("mostrarProductos");
+//Ver productos
 const verProductos = () => {
   arrayProductos.forEach(producto => {
     const cardBs = document.createElement("div");
@@ -55,9 +66,19 @@ const verProductos = () => {
       agregar(producto.id);
     })
   })
-};
+}
+  verProductos();
+ };
+ 
+ agregarDatosAPI();
 
-verProductos();
+
+let carrito = [];
+
+if (localStorage.getItem("carrito")) {
+  carrito = JSON.parse(localStorage.getItem("carrito"))
+}
+
 
 // AGREGAR UN PRODUCTO AL CARRITO
 const agregar = (id) => {
@@ -65,10 +86,12 @@ const agregar = (id) => {
   if (enCarrito) {
     enCarrito.cantidad++;
     costo();
+    Swal.fire('Producto Agregado')
   } else {
     const producto = arrayProductos.find(producto => producto.id === id);
     carrito.push(producto);
     costo();
+    Swal.fire('Producto Agregado')
   }
   localStorage.setItem("carrito", JSON.stringify(carrito))
 }
@@ -240,4 +263,8 @@ if (modoClaroOscuro === "oscuro") {
 
 
 
+
+function newFunction() {
+  console.log(arrayProductos);
+}
 

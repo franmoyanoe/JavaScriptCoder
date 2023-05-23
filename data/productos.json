@@ -1,0 +1,67 @@
+[
+    {
+      "id": 1,
+      "nombre": "Call of Duty Modern Warfare 2 PS5",
+      "precio": 40000,
+      "img": "img/juego1.jpg",
+      "descripcion":"Incluye - Lote multigeneración de Call of Duty® Modern Warfare® II",
+      "cantidad":1
+    },
+    {
+      "id": 2,
+      "nombre": "God of War Ragnarök PS5",
+      "precio": 30000,
+      "img": "img/juego2.jpg",
+      "descripcion": "Embárcate en un épico y cordial viaje junto a Kratos y Atreus",
+      "cantidad": 1
+    },
+    {
+      "id": 3,
+      "nombre": "NBA 2K23 PS5",
+      "precio": 35000,
+      "img": "img/juego3.jpg",
+      "descripcion": "Ponte a la altura y desarrolla todo tu potencial en NBA 2K23",
+      "cantidad": 1
+    },
+    {
+      "id": 4,
+      "nombre": "Elden Ring Edición Deluxe PS5",
+      "precio": 50000,
+      "img": "img/juego4.jpg",
+      "descripcion": "Incluye juego completo, libro de arte digital y banda sonora original",
+      "cantidad": 1
+    },
+    {
+      "id": 5,
+      "nombre": "Grand Theft Auto V PS5",
+      "precio": 25000,
+      "img": "img/juego5.jpg",
+      "descripcion": "Entra en las vidas de tres delincuentes muy distintos, Michael, Franklin y Trevor",
+      "cantidad": 1
+    },
+    {
+      "id": 6,
+      "nombre": "FIFA 23 PS5",
+      "precio": 45000,
+      "img": "img/juego6.jpg",
+      "descripcion": "Con los torneos de la Copa Mundial de la FIFA™ masculina y femenina",
+      "cantidad": 1
+    },
+    {
+      "id": 7,
+      "nombre": "Horizon Forbidden West PS5",
+      "precio": 47000,
+      "img": "img/juego7.jpg",
+      "descripcion": "Descubre tierras lejanas, enemigos nuevos, culturas ricas y personajes llenos de vida",
+      "cantidad": 1
+    },
+    {
+      "id": 8,
+      "nombre": "Cyberpunk 2077 PS4",
+      "precio": 15000,
+      "img": "img/juego8.jpg",
+      "descripcion": "Es un RPG de aventura y acción de mundo abierto",
+      "cantidad": 1
+    }
+  ]
+  
