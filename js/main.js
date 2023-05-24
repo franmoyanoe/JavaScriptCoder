@@ -8,6 +8,8 @@ navBar.innerHTML = `
         <button class="navbar-toggler" type="button"></button>
         <ul class="navbar-nav">
             <li class="nav-item">
+          <button class="buttonNav" id = "botonFiltrar">Filtrar Juego
+          </button>
           <button class="buttonNav" id = "botonVerCarrito">Ver carrito
           </button>
           <button class="buttonNav" id = "botonVaciarCarrito">Vaciar carrito
@@ -85,11 +87,13 @@ const agregar = (id) => {
   const enCarrito = carrito.find(producto => producto.id === id);
   if (enCarrito) {
     enCarrito.cantidad++;
+    vemosCarrito();
     costo();
     Swal.fire('Producto Agregado')
   } else {
     const producto = arrayProductos.find(producto => producto.id === id);
     carrito.push(producto);
+    vemosCarrito();
     costo();
     Swal.fire('Producto Agregado')
   }
@@ -114,6 +118,7 @@ const etiquetaTitulo = document.createElement("div");
 etiquetaTitulo.innerHTML = `<div class="divTitulo"><p class="tituloCarrito">Carrito de Compras</p></div>`
 titulo.appendChild(etiquetaTitulo);
 
+//funcion ver carrito
 const vemosCarrito = () => {
   carritoMostrarDom.innerHTML = [];
   carrito.forEach(producto => {
@@ -127,7 +132,7 @@ const vemosCarrito = () => {
           <h2 class="card-title">${producto.nombre}</h2>
           <p> Cantidad: ${producto.cantidad} </p>
           <p class="card-text">$ ${producto.precio}</p></div>
-          <button class="btn btn-dark" id ="botonEliminar${producto.id}">eliminar del carrito</button>
+          <button class="btn btn-dark" id ="botonEliminar${producto.id}">Eliminar del carrito</button>
           </div>`;
 
     carritoMostrarDom.appendChild(cardBs)
@@ -138,7 +143,7 @@ const vemosCarrito = () => {
     })
   })
 }
-
+//funcion elimanar producto
 const eliminamosProducto = (id) => {
   const productoEliminado = carrito.find(producto => producto.id === id);
   const indice = carrito.indexOf(productoEliminado);
@@ -153,9 +158,35 @@ const eliminamosProducto = (id) => {
 const vaciar = document.getElementById("botonVaciarCarrito");
 
 vaciar.addEventListener("click", () => {
-  eliminamosTodo()
+  if(carrito.length==0){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Carrito Vacio!',
+    })
+  }
+  else{
+  Swal.fire({
+    title: 'Eliminar Carrito?',
+    text: "Esta operación no se puede deshacer!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Si, Eliminar!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      eliminamosTodo();
+      Swal.fire(
+        'Eliminado!',
+        'El carrito se eliminó.',
+        'success'
+      )
+    }
+  })
+}
 });
-
+//funcion eliminar todo
 const eliminamosTodo = () => {
   carrito = [];
   vemosCarrito();
@@ -177,58 +208,89 @@ const costo = () => {
 const finalizar = document.getElementById("botonFinalizarCompra"); /*Recordar boton creado en el NAV.*/
 
 finalizar.addEventListener("click", () => {
-  vemosCarrito();
-  const formFinalizar = document.createElement("div");
-  formFinalizar.innerHTML = `<form class="mb-3 contenedorForm formFianlizar" id= "formEnviar">
-      <label for="exampleInputEmail1" class="labelForm">Ingrese su nombre</label>
-      <input id = "inputNombre" type="text" class="form-control textInput" id="exampleInputEmail1" aria-describedby="emailHelp">
-      <label for="exampleInputEmail1" class="labelForm">Email</label>
-      <input id = "inputMail" type="email" class="form-control textInput" id="exampleInputEmail1" aria-describedby="emailHelp">
-      <label for="exampleInput" class="labelForm">Ingrese dirección para enviar pedido.</label>
-      <input id = "inputDir" type="text" class="form-control textInput" id="exampleInputEmail1" aria-describedby="emailHelp">
-      <p>El pago se realiza cuando el pedido se entrega</p>
-      <button class="btn btn-warning">Enviar</button>
-      <button id = "botonSalir" class="btn btn-warning">Salir</button>
-    `;
-  carritoMostrarDom.appendChild(formFinalizar);
-
-  // FUNCION Y BOTON PARA SALIR
-  const botonSalir = document.getElementById("botonSalir");
-  console.log(botonSalir);
-  botonSalir.addEventListener("click", () => {
-    eliminamosTodo();
-  })
-
-  //  BOTON ENVIAR
-  const inputNombre = document.getElementById("inputNombre");
-  console.log(inputNombre);
-  const inputMail = document.getElementById("inputMail");
-  console.log(inputMail);
-  const inputDir = document.getElementById("inputDir");
-  console.log(inputDir);
-
-  // MENSAJE FORM
-  const mensajeForm = document.getElementById("mensajeFinalizar")
-  console.log(mensajeForm);
-  carritoMostrarDom.appendChild(mensajeForm)
-
-  
-  const botonEnviar = document.getElementById("formEnviar");
-  console.log(botonEnviar);
-  botonEnviar.addEventListener("submit", (e) => {
-    e.preventDefault()
-    if (inputNombre.value == "" || inputMail.value == "" || inputDir.value == "") {
-      mensajeForm.innerHTML = `<h3>No ingreso datos para envio</h3>`
-      setTimeout(() => {
-        mensajeForm.innerHTML = '';
-      }, 3000);
-    } else {
-      mensajeForm.innerHTML = `<h3>Muchas gracias su pedido está en camino</h3>` 
-      setTimeout(() => {
-        mensajeForm.innerHTML = '';
-      }, 3000);
+  if(carrito.length==0){
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Carrito Vacio!',
+    })
+  }
+  else{
+  Swal.fire({
+    title: 'Finalizar Compra?',
+    text: "Cancela si desea seguir comprando juegos",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Finalizar Compra'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      vemosCarrito();
+      const formFinalizar = document.createElement("div");
+      formFinalizar.innerHTML = `<form class="mb-3 contenedorForm formFianlizar" id= "formEnviar">
+          <label for="exampleInputEmail1" class="labelForm">Ingrese su nombre</label>
+          <input id = "inputNombre" type="text" class="form-control textInput" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <label for="exampleInputEmail1" class="labelForm">Email</label>
+          <input id = "inputMail" type="email" class="form-control textInput" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <label for="exampleInput" class="labelForm">Ingrese dirección para enviar pedido.</label>
+          <input id = "inputDir" type="text" class="form-control textInput" id="exampleInputEmail1" aria-describedby="emailHelp">
+          <p>El pago se realiza cuando el pedido se entrega</p>
+          <button class="btn btn-warning">Enviar</button>
+          <button id = "botonSalir" class="btn btn-warning">Salir</button>
+        `;
+      carritoMostrarDom.appendChild(formFinalizar);
+    
+      // FUNCION Y BOTON PARA SALIR
+      const botonSalir = document.getElementById("botonSalir");
+      console.log(botonSalir);
+      botonSalir.addEventListener("click", () => {
+        eliminamosTodo();
+      })
+    
+      //  BOTON ENVIAR
+      const inputNombre = document.getElementById("inputNombre");
+      console.log(inputNombre);
+      const inputMail = document.getElementById("inputMail");
+      console.log(inputMail);
+      const inputDir = document.getElementById("inputDir");
+      console.log(inputDir);
+    
+      // MENSAJE FORM
+      const mensajeForm = document.getElementById("mensajeFinalizar")
+      console.log(mensajeForm);
+      carritoMostrarDom.appendChild(mensajeForm)
+    
+      
+      const botonEnviar = document.getElementById("formEnviar");
+      console.log(botonEnviar);
+      botonEnviar.addEventListener("submit", (e) => {
+        e.preventDefault()
+        if (inputNombre.value == "" || inputMail.value == "" || inputDir.value == "") {
+          mensajeForm.innerHTML = `<h3>No ingreso datos para envio</h3>`
+          setTimeout(() => {
+            mensajeForm.innerHTML = '';
+          }, 3000);
+        } else {
+          Swal.fire({
+            title: 'Tus juesgos están en camino!',
+            text: 'Serán entregados en la dirección que especificaste.',
+            imageUrl: 'https://st.depositphotos.com/29688696/57556/v/600/depositphotos_575564402-stock-illustration-motorbike-for-food-delivery-service.jpg',
+            imageWidth: 300,
+            imageHeight: 200,
+            imageAlt: 'Custom image',
+          })
+          eliminamosTodo();
+        }
+      });
+      Swal.fire(
+        'Compra Finalizada!',
+        'Por favor Completa el formalario de entrega.',
+        'success'
+      )
     }
-  });
+  })
+  }
 });
 
 // BOTON MODO /*Recordar boton creado en el NAV.*/
@@ -250,19 +312,52 @@ if (modoClaroOscuro === "oscuro") {
 } else {
   document.body.classList.remove("oscuro");
 }
+//funcion filtrar juegos
+function filtrarProductos(){
+  Swal.fire({
+      title: 'Ingresa el producto que deseas buscar',
+      input: 'text',
+      showCancelButton: true,
+      confirmButtonText: 'Buscar',
+      showLoaderOnConfirm: true,
 
 
 
+      preConfirm: (palabraClave) => {
+          palabraClave = palabraClave.trim().toUpperCase()
+          let resultado = arrayProductos.filter((producto)=> producto.nombre.toUpperCase().includes(palabraClave))
 
 
+           if (resultado.length > 0){
+              console.table(resultado)
 
 
+              
+              Swal.fire({
+                  title: 'Resultados de búsqueda',
+                  html: '<table><tr><th>Nombre</th><th>Precio</th></tr>' +
+                        resultado.map(producto => `<tr><td>${producto.nombre}</td><td>${producto.precio}</td></tr>`).join('') +
+                        '</table>',
+                  confirmButtonText: 'OK'
+              })
+              
+          } else {
+              Swal.fire({
+                  title: 'No se encontraron coincidencias',
+                  icon: 'error',
+                  confirmButtonText: 'OK'
+              })
+          }
+      }
+  });
+}
+
+const filtrarJuego = document.getElementById("botonFiltrar"); 
 
 
-
-
-
-
+filtrarJuego.addEventListener("click", () => {
+  filtrarProductos();
+})
 
 function newFunction() {
   console.log(arrayProductos);
